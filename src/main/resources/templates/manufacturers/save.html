@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Save user</title>
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+  <body>
+    <div th:insert="navbar :: navbar"></div>
+
+    <form action="/manufacturer/save" method="POST">
+      Id (fulfill for existing user): <br>
+      <input type="text" name="id"> <br>
+      Name: <br>
+      <input type="text" name="name"> <br>
+      <button type="submit">Save</button>
+      <input type = "reset" value = "Reset form">
+    </form> <br>
+    <div th:text="${msg}"></div>
+  </body>
+</html>
