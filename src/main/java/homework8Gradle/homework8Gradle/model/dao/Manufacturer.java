@@ -3,6 +3,7 @@ package homework8Gradle.homework8Gradle.model.dao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Manufacturer {
     String id;
 
     String name;
+
     @OneToMany(mappedBy="manufacturer")
     @JsonIgnore
     Set<Product> products;

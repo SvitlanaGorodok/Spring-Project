@@ -32,7 +32,9 @@ public class ManufacturerController {
     @GetMapping("/findbyid")
     public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") String id){
         ModelAndView result = new ModelAndView("/manufacturers/findbyid");
-        result.addObject("manufacturers", ManufacturerDto.fromManufacturer(service.findById(id)));
+        if (!id.isEmpty()) {
+            result.addObject("manufacturers", ManufacturerDto.fromManufacturer(service.findById(id)));
+        }
         return result;
     }
 

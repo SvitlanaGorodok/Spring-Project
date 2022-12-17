@@ -28,6 +28,9 @@ public class ProductController {
                 .stream()
                 .map(ProductDto::fromProduct)
                 .collect(Collectors.toList());
+        for (ProductDto product : products) {
+            product.setManufacturerId(manufacturerService.findById(product.getManufacturerId()).getName());
+        }
         result.addObject("products", products);
         return result;
     }
@@ -35,7 +38,11 @@ public class ProductController {
     @GetMapping("/findbyid")
     public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") String id){
         ModelAndView result = new ModelAndView("/products/findbyid");
-        result.addObject("products", ProductDto.fromProduct(service.findById(id)));
+        if (!id.isEmpty()){
+            ProductDto product = ProductDto.fromProduct(service.findById(id));
+            product.setManufacturerId(manufacturerService.findById(product.getManufacturerId()).getName());
+            result.addObject("products", product);
+        }
         return result;
     }
 

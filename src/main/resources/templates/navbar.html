@@ -8,9 +8,9 @@
 
 <nav th:fragment="navbar" class="navbar navbar-inverse">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/}">Storage</a>
-        </div>
+<!--        <div class="navbar-header">-->
+<!--&lt;!&ndash;            <a class="navbar-brand" th:href="@{/}">Storage</a>&ndash;&gt;-->
+<!--        </div>-->
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/}">Home</a></li>
             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" th:href="@{/}">Users<span class="caret"></span></a>
@@ -37,6 +37,7 @@
                     <li><a th:href="@{/manufacturer/delete}">Delete</a></li>
                 </ul>
             </li>
+            <li class="active"><a th:href="@{/login?logout}">Logout</a></li>
         </ul>
     </div>
 </nav>

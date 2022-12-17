@@ -17,7 +17,7 @@ public class User {
     String firstName;
     String lastName;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     Set<UserRole> roles;
 

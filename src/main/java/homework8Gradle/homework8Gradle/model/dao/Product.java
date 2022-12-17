@@ -1,6 +1,7 @@
 package homework8Gradle.homework8Gradle.model.dao;
 
 import lombok.Data;
+import lombok.NonNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
