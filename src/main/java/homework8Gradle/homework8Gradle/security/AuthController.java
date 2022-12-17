@@ -7,6 +7,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AuthController {
+    @GetMapping("/")
+    public String homepage() {
+        return "index";
+    }
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(name = "msg", required = false, defaultValue = "") String msg,
                               String logout, String error) {
@@ -21,9 +25,10 @@ public class AuthController {
         return model;
     }
 
-    @GetMapping("/")
-    public String homepage() {
-        return "index";
+    @GetMapping("/accessdenied")
+    public String deniedPage() {
+        return "forbidden";
     }
+
 
 }

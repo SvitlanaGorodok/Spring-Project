@@ -23,6 +23,8 @@ public class DBInit {
         admin.setId(UUID.randomUUID().toString());
         admin.setEmail("admin");
         admin.setPassword(encoder.encode("adminpass"));
+        admin.setFirstName("admin");
+        admin.setLastName("admin");
         admin.setRoles(Set.of(UserRole.ROLE_ADMIN));
         userRepository.save(admin);
     }
