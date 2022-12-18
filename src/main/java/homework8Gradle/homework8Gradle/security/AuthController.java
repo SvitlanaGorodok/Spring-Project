@@ -13,19 +13,17 @@ public class AuthController {
         return "index";
     }
     @GetMapping("/login")
-    public ModelAndView login(@RequestParam(name = "msg", required = false, defaultValue = "") String msg, String error) {
+    public ModelAndView login(@RequestParam(name = "msg", required = false, defaultValue = "") String msg,
+                              String logout, String error) {
         ModelAndView model = new ModelAndView("login");
         model.addObject("msg", msg);
         if (error != null) {
             model.addObject("msg", "Your username or password is invalid!");
         }
+        if (logout != null) {
+            model.addObject("msg", "You have been successfully logout!");
+        }
         return model;
-    }
-
-    @GetMapping("/logout")
-    public RedirectView logout(){
-        RedirectView redirect = new RedirectView("/login?logout");
-        return redirect;
     }
 
     @GetMapping("/accessdenied")
