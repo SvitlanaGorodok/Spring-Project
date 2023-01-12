@@ -1,13 +1,17 @@
 package homework8Gradle.homework8Gradle.model.dao;
-import homework8Gradle.homework8Gradle.model.UserRole;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
-@Table (name = "\"user\"")
+@Table (name = "\"users\"")
 @Entity
-@Data
+@Setter
+@Getter
 public class User {
     @Id
     String id;
@@ -17,8 +21,11 @@ public class User {
     String firstName;
     String lastName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    Set<UserRole> roles;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_role_relation",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    Set<Role> roles = new HashSet<>();
 
 }

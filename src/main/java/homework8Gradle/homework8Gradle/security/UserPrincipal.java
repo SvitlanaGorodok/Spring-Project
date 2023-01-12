@@ -1,6 +1,6 @@
 package homework8Gradle.homework8Gradle.security;
 
-import homework8Gradle.homework8Gradle.model.UserRole;
+import homework8Gradle.homework8Gradle.model.dao.Role;
 import homework8Gradle.homework8Gradle.model.dao.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,8 +14,8 @@ public class UserPrincipal implements UserDetails {
     @Override
             public Collection<SimpleGrantedAuthority> getAuthorities() {
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                Set<UserRole> roles = user.getRoles();
-                for(UserRole role : roles) {
+                Set<Role> roles = user.getRoles();
+                for(Role role : roles) {
                     authorities.add(new SimpleGrantedAuthority(role.getName()));
                 }
                 return authorities;

@@ -1,6 +1,6 @@
 package homework8Gradle.homework8Gradle.model.dto;
 
-import homework8Gradle.homework8Gradle.model.UserRole;
+import homework8Gradle.homework8Gradle.model.dao.Role;
 import homework8Gradle.homework8Gradle.model.dao.User;
 import lombok.Data;
 
@@ -13,7 +13,7 @@ public class UserDto {
     String password;
     String firstName;
     String lastName;
-    Set<UserRole> roles;
+    Set<Role> roles;
 
     public static User toUser(UserDto userDto){
         if (userDto == null) {

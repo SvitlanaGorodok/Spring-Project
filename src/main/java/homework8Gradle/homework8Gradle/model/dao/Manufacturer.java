@@ -1,16 +1,14 @@
 package homework8Gradle.homework8Gradle.model.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
-@Data
+//@Entity
+@Setter
+@Getter
 public class Manufacturer {
     @Id
     String id;

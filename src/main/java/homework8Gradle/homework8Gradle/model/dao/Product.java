@@ -1,14 +1,15 @@
 package homework8Gradle.homework8Gradle.model.dao;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Entity
-@Data
+//@Entity
+@Setter
+@Getter
 public class Product {
     @Id
     String id;

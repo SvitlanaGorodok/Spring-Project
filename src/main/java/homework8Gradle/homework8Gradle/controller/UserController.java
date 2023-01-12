@@ -1,7 +1,6 @@
 package homework8Gradle.homework8Gradle.controller;
 
 import homework8Gradle.homework8Gradle.exception.UserAlreadyExistException;
-import homework8Gradle.homework8Gradle.model.UserRole;
 import homework8Gradle.homework8Gradle.model.dao.User;
 import homework8Gradle.homework8Gradle.model.dto.UserDto;
 import homework8Gradle.homework8Gradle.service.UserService;
