@@ -7,7 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-//@Entity
+@Table(name = "products")
+@Entity
 @Setter
 @Getter
 public class Product {
@@ -18,7 +19,9 @@ public class Product {
     Long price;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "manufacturer_id", nullable=false)
+    @JoinTable(name = "product_manufacturer_relation",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "manufacturer_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     Manufacturer manufacturer;
 

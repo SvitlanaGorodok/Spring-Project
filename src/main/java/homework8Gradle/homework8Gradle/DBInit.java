@@ -2,6 +2,7 @@ package homework8Gradle.homework8Gradle;
 
 import homework8Gradle.homework8Gradle.model.dao.Role;
 import homework8Gradle.homework8Gradle.model.dao.User;
+import homework8Gradle.homework8Gradle.repository.RoleRepository;
 import homework8Gradle.homework8Gradle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Component
 public class DBInit {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder encoder;
 
     @PostConstruct
@@ -28,6 +30,7 @@ public class DBInit {
         Role role = new Role();
         role.setId(UUID.randomUUID().toString());
         role.setName("ROLE_ADMIN");
+        roleRepository.save(role);
         admin.setRoles(Set.of(role));
         userRepository.save(admin);
     }

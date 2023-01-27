@@ -3,11 +3,9 @@ package homework8Gradle.homework8Gradle.service;
 import homework8Gradle.homework8Gradle.exception.UserAlreadyExistException;
 import homework8Gradle.homework8Gradle.model.dao.Role;
 import homework8Gradle.homework8Gradle.model.dao.User;
-import homework8Gradle.homework8Gradle.model.dto.UserDto;
 import homework8Gradle.homework8Gradle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

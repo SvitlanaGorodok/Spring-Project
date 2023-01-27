@@ -6,7 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
-//@Entity
+@Table(name = "manufacturers")
+@Entity
 @Setter
 @Getter
 public class Manufacturer {
