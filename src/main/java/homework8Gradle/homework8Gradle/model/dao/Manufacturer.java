@@ -19,7 +19,6 @@ public class Manufacturer {
     @OneToMany(mappedBy="manufacturer")
     @JsonIgnore
     Set<Product> products;
-
     public Manufacturer(){
     }
 
