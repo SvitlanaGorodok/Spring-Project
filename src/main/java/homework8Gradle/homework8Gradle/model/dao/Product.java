@@ -15,7 +15,10 @@ public class Product {
     @Id
     String id;
 
+    @Column(name = "name", nullable = false, length = 50)
     String name;
+
+    @Column(name = "price", nullable = false)
     Long price;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)

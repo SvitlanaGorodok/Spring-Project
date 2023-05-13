@@ -7,10 +7,10 @@ import org.mapstruct.Mapping;
 
 import java.time.LocalDate;
 
-@Mapper(componentModel = "Spring", imports = {LocalDate.class})
+//@Mapper(componentModel = "Spring", imports = {LocalDate.class})
 public interface EntityMapper {
 
-    @Mapping(target = "passwordConfirm", ignore = true)
+//    @Mapping(target = "passwordConfirm", ignore = true)
     UserDto userToDto(User user);
     User userToDAO(UserDto userDTO);
 }

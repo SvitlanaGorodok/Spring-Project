@@ -14,11 +14,12 @@ public class Manufacturer {
     @Id
     String id;
 
+    @Column(name = "name", nullable = false, length = 50)
     String name;
 
-    @OneToMany(mappedBy="manufacturer")
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="manufacturer")
     Set<Product> products;
+
     public Manufacturer(){
     }
 

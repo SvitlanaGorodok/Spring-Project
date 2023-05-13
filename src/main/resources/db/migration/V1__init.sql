@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS products
 (
     id VARCHAR(50)
         CONSTRAINT product_pk PRIMARY KEY,
-    name VARCHAR(20) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     price BIGINT
 );
 
