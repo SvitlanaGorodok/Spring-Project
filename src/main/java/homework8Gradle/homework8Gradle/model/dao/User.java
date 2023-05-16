@@ -5,27 +5,32 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 @Table (name = "\"users\"")
 @Entity
 @Setter
 @Getter
 public class User {
-    @Id
-    String id;
 
+    @Id
+    UUID id;
+
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     String email;
-    String password;
+
+    @Column(name = "first_name", nullable = false, length = 50)
     String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 50)
     String lastName;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_role_relation",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Column(name = "password", nullable = false, length = 100)
+    String password;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "role_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    Set<Role> roles = new HashSet<>();
+    Role role;
 
 }

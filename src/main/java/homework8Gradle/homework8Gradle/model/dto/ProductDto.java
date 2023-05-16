@@ -4,6 +4,8 @@ import homework8Gradle.homework8Gradle.model.dao.Manufacturer;
 import homework8Gradle.homework8Gradle.model.dao.Product;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class ProductDto {
     String id;
@@ -16,7 +18,7 @@ public class ProductDto {
             return null;
         }
         Product product = new Product();
-        product.setId(productDto.getId());
+        product.setId(UUID.fromString(productDto.getId()));
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
         product.setManufacturer(ManufacturerDto.toManufacturer(manufacturerDto));
@@ -28,10 +30,10 @@ public class ProductDto {
             return null;
         }
         ProductDto productDto = new ProductDto();
-        productDto.setId(product.getId());
+        productDto.setId(product.getId().toString());
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
-        productDto.setManufacturerId(product.getManufacturer().getId());
+        productDto.setManufacturerId(product.getManufacturer().getId().toString());
         return productDto;
     }
 }

@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Table(name = "products")
 @Entity
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 public class Product {
     @Id
-    String id;
+    UUID id;
 
     @Column(name = "name", nullable = false, length = 50)
     String name;
@@ -22,9 +23,7 @@ public class Product {
     Long price;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "product_manufacturer_relation",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "manufacturer_id"))
+    @JoinColumn(name = "manufacturer_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     Manufacturer manufacturer;
 

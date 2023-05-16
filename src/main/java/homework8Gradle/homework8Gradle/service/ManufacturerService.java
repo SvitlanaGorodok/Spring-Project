@@ -16,8 +16,8 @@ public class ManufacturerService implements CrudService<Manufacturer>{
 
     @Override
     public Manufacturer save(Manufacturer manufacturer) {
-        if (manufacturer.getId() == null || manufacturer.getId().isEmpty()){
-            manufacturer.setId(UUID.randomUUID().toString());
+        if (manufacturer.getId() == null){
+            manufacturer.setId(UUID.randomUUID());
         }
         return repository.save(manufacturer);
     }

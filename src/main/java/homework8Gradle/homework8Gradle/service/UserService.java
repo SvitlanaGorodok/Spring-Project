@@ -21,8 +21,8 @@ public class UserService implements CrudService<User>{
 
     @Override
     public User save(User user) {
-        if (user.getId() == null || user.getId().isEmpty()){
-            user.setId(UUID.randomUUID().toString());
+        if (user.getId() == null){
+            user.setId(UUID.randomUUID());
         }
         return repository.save(user);
     }
@@ -46,9 +46,9 @@ public class UserService implements CrudService<User>{
             throw new UserAlreadyExistException(String.format("User with specified email already exist %s", user.getEmail()));
         }
         Role role = new Role();
-        role.setId(UUID.randomUUID().toString());
+        role.setId(UUID.randomUUID());
         role.setName("ROLE_USER");
-        user.setRoles(Set.of(role));
+        user.setRole(role);
         user.setPassword(encoder.encode(user.getPassword()));
         save(user);
     }

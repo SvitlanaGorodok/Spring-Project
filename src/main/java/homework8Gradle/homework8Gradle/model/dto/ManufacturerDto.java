@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 public class ManufacturerDto {
@@ -17,7 +18,7 @@ public class ManufacturerDto {
             return null;
         }
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(manufacturerDto.getId());
+        manufacturer.setId(UUID.fromString(manufacturerDto.getId()));
         manufacturer.setName(manufacturerDto.getName());
         manufacturer.setProducts(new HashSet<>());
         return manufacturer;
@@ -28,7 +29,7 @@ public class ManufacturerDto {
             return null;
         }
         ManufacturerDto manufacturerDto = new ManufacturerDto();
-        manufacturerDto.setId(manufacturer.getId());
+        manufacturerDto.setId(manufacturer.getId().toString());
         manufacturerDto.setName(manufacturer.getName());
         return manufacturerDto;
     }

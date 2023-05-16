@@ -16,8 +16,8 @@ public class ProductService implements CrudService<Product>{
 
     @Override
     public Product save(Product product) {
-        if (product.getId() == null || product.getId().isEmpty()){
-            product.setId(UUID.randomUUID().toString());
+        if (product.getId() == null){
+            product.setId(UUID.randomUUID());
         }
         return repository.save(product);
     }
