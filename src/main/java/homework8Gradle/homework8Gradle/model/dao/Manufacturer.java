@@ -3,6 +3,7 @@ package homework8Gradle.homework8Gradle.model.dao;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,6 +20,6 @@ public class Manufacturer {
     String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="manufacturer")
-    Set<Product> products;
+    Set<Product> products = new HashSet<>();
 
 }

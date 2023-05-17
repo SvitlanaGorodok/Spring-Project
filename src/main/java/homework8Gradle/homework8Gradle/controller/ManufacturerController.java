@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,20 +22,14 @@ public class ManufacturerController {
     @GetMapping("/showall")
     public ModelAndView showAll(){
         ModelAndView result = new ModelAndView("/manufacturers/findall");
-        List<ManufacturerDto> manufacturers = service.findAll()
-                .stream()
-                .map(ManufacturerDto::fromManufacturer)
-                .collect(Collectors.toList());
-        result.addObject("manufacturers", manufacturers);
+        result.addObject("manufacturers", service.findAll());
         return result;
     }
 
     @GetMapping("/findbyid")
-    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") String id){
+    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
         ModelAndView result = new ModelAndView("/manufacturers/findbyid");
-        if (!id.isEmpty()) {
-            result.addObject("manufacturers", ManufacturerDto.fromManufacturer(service.findById(id)));
-        }
+        result.addObject("manufacturers", service.findById(id));
         return result;
     }
 
@@ -47,7 +42,7 @@ public class ManufacturerController {
 
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("manufacturerDto") ManufacturerDto manufacturerDto){
-        ManufacturerDto.fromManufacturer(service.save(ManufacturerDto.toManufacturer(manufacturerDto)));
+        service.save(manufacturerDto);
         RedirectView redirect = new RedirectView("/manufacturer/save");
         redirect.addStaticAttribute("msg", "Manufacturer successfully saved!");
         return redirect;
@@ -61,7 +56,7 @@ public class ManufacturerController {
     }
 
     @PostMapping("/delete")
-    public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") String id){
+    public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
         RedirectView redirect = new RedirectView("/manufacturer/delete");
         try{
             service.deleteById(id);

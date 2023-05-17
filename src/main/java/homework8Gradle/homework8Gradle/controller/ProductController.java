@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -24,25 +25,14 @@ public class ProductController {
     @GetMapping ("/showall")
     public ModelAndView showAll(){
         ModelAndView result = new ModelAndView("/products/findall");
-        List<ProductDto> products = service.findAll()
-                .stream()
-                .map(ProductDto::fromProduct)
-                .collect(Collectors.toList());
-        for (ProductDto product : products) {
-            product.setManufacturerId(manufacturerService.findById(product.getManufacturerId()).getName());
-        }
-        result.addObject("products", products);
+        result.addObject("products", service.findAll());
         return result;
     }
 
     @GetMapping("/findbyid")
-    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") String id){
+    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
         ModelAndView result = new ModelAndView("/products/findbyid");
-        if (!id.isEmpty()){
-            ProductDto product = ProductDto.fromProduct(service.findById(id));
-            product.setManufacturerId(manufacturerService.findById(product.getManufacturerId()).getName());
-            result.addObject("products", product);
-        }
+            result.addObject("products", service.findById(id));
         return result;
     }
 
@@ -56,9 +46,7 @@ public class ProductController {
 
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("productDto") ProductDto productDto){
-        ProductDto.fromProduct(service.save(ProductDto.toProduct(productDto,
-                        ManufacturerDto.fromManufacturer(
-                        manufacturerService.findById(productDto.getManufacturerId())))));
+        service.save(productDto);
         RedirectView redirect = new RedirectView("/product/save");
         redirect.addStaticAttribute("msg", "Product successfully saved!");
         return redirect;
@@ -72,7 +60,7 @@ public class ProductController {
     }
 
     @PostMapping("/delete")
-    public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") String id){
+    public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
         RedirectView redirect = new RedirectView("/product/delete");
         try{
             service.deleteById(id);

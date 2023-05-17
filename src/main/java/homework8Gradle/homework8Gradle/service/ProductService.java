@@ -1,6 +1,9 @@
 package homework8Gradle.homework8Gradle.service;
 
+import homework8Gradle.homework8Gradle.exception.NoSuchEntityFoundException;
+import homework8Gradle.homework8Gradle.model.EntityMapper;
 import homework8Gradle.homework8Gradle.model.dao.Product;
+import homework8Gradle.homework8Gradle.model.dto.ProductDto;
 import homework8Gradle.homework8Gradle.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,32 +11,39 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class ProductService implements CrudService<Product>{
+public class ProductService implements CrudService<ProductDto>{
     private final ProductRepository repository;
+    private final EntityMapper mapper;
 
     @Override
-    public Product save(Product product) {
-        if (product.getId() == null){
-            product.setId(UUID.randomUUID());
+    public ProductDto save(ProductDto productDto) {
+        if (productDto.getId() == null){
+            productDto.setId(UUID.randomUUID());
         }
-        return repository.save(product);
+        Product saved = repository.save(mapper.productToDao(productDto));
+        return mapper.productToDto(saved);
     }
 
     @Override
-    public List<Product> findAll() {
-        return new ArrayList<>(repository.findAll());
+    public List<ProductDto> findAll() {
+        return repository.findAll().stream()
+                .map(mapper::productToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Product findById(String id) {
-        return repository.findById(id).orElse(null);
+    public ProductDto findById(UUID id) {
+        Product productById = repository.findById(id)
+                .orElseThrow(() -> new NoSuchEntityFoundException("Product with id " + id + "not found!"));
+        return mapper.productToDto(productById);
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         repository.deleteById(id);
     }
 }

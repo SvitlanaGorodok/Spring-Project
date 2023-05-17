@@ -1,14 +1,11 @@
 package homework8Gradle.homework8Gradle.controller;
 
 import homework8Gradle.homework8Gradle.exception.UserAlreadyExistException;
-import homework8Gradle.homework8Gradle.model.dao.User;
 import homework8Gradle.homework8Gradle.model.dto.UserDto;
 import homework8Gradle.homework8Gradle.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -27,21 +25,15 @@ public class UserController {
     @GetMapping("/showall")
     public ModelAndView showAll() {
         ModelAndView model = new ModelAndView("/users/findall");
-        List<UserDto> users = service.findAll()
-                                    .stream()
-                                    .map(UserDto::fromUser)
-                                    .collect(Collectors.toList());
-        model.addObject("users", users);
+        model.addObject("users", service.findAll());
         return model;
     }
 
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/findbyid")
-    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") String id){
+    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
         ModelAndView model = new ModelAndView("/users/findbyid");
-        if (!id.isEmpty()) {
-            model.addObject("users", UserDto.fromUser(service.findById(id)));
-        }
+        model.addObject("users", service.findById(id));
         return model;
     }
 
@@ -56,7 +48,7 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("userDto") UserDto userDto){
-        UserDto.fromUser(service.save(UserDto.toUser(userDto)));
+        service.save(userDto);
         RedirectView redirect = new RedirectView("/user/save");
         redirect.addStaticAttribute("msg", "User successfully saved!");
         return redirect;
@@ -72,7 +64,7 @@ public class UserController {
 
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/delete")
-    public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") String id){
+    public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
         RedirectView redirect = new RedirectView("/user/delete");
         try{
             service.deleteById(id);
@@ -91,7 +83,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public RedirectView registration(@Validated @ModelAttribute("user") User user){
+    public RedirectView registration(@Validated @ModelAttribute("user") UserDto user){
         RedirectView redirect = new RedirectView("/login");
         try {
             service.register(user);

@@ -10,27 +10,6 @@ import java.util.UUID;
 
 @Data
 public class ManufacturerDto {
-    String id;
+    UUID id;
     String name;
-
-    public static Manufacturer toManufacturer(ManufacturerDto manufacturerDto){
-        if (manufacturerDto == null) {
-            return null;
-        }
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(UUID.fromString(manufacturerDto.getId()));
-        manufacturer.setName(manufacturerDto.getName());
-        manufacturer.setProducts(new HashSet<>());
-        return manufacturer;
-    }
-
-    public static ManufacturerDto fromManufacturer(Manufacturer manufacturer){
-        if (manufacturer == null) {
-            return null;
-        }
-        ManufacturerDto manufacturerDto = new ManufacturerDto();
-        manufacturerDto.setId(manufacturer.getId().toString());
-        manufacturerDto.setName(manufacturer.getName());
-        return manufacturerDto;
-    }
 }

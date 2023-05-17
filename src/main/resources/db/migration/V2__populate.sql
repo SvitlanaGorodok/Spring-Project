@@ -1,5 +1,6 @@
 INSERT INTO roles (id, name)
-VALUES ('822ef4f8-7c1d-4c5d-9485-0e0a9fc379d4','ROLE_ADMIN');
+VALUES ('822ef4f8-7c1d-4c5d-9485-0e0a9fc379d4','ROLE_ADMIN'),
+       ('495c0735-2411-46f2-8d3c-0fd91a636088','ROLE_USER');
 
 INSERT INTO users (id, email, first_name, last_name, "password", role_id)
 VALUES ('4f77a61f-8a46-4199-ac9a-a9314dbe75cb', 'admin', 'admin', 'admin',
