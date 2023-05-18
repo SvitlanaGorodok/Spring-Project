@@ -1,4 +1,4 @@
-package homework8Gradle.homework8Gradle.model;
+package homework8Gradle.homework8Gradle.model.mapper;
 
 import homework8Gradle.homework8Gradle.model.dao.Manufacturer;
 import homework8Gradle.homework8Gradle.model.dao.Product;

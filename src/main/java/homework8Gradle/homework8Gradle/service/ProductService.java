@@ -1,14 +1,13 @@
 package homework8Gradle.homework8Gradle.service;
 
 import homework8Gradle.homework8Gradle.exception.NoSuchEntityFoundException;
-import homework8Gradle.homework8Gradle.model.EntityMapper;
+import homework8Gradle.homework8Gradle.model.mapper.EntityMapper;
 import homework8Gradle.homework8Gradle.model.dao.Product;
 import homework8Gradle.homework8Gradle.model.dto.ProductDto;
 import homework8Gradle.homework8Gradle.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

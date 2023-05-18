@@ -2,25 +2,31 @@
 <html lang="en">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta charset="UTF-8">
     <title>Registration</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form action="/user/registration" method="POST">
-  Email: <br>
-  <input type="text" name="email" required><br>
-  Password: <br>
-  <input type="text" name="password" required><br>
-  First name: <br>
-  <input type="text" name="firstName"> <br>
-  Last name: <br>
-  <input type="text" name="lastName"> <br>
-  <button type="submit">Registration</button>
-</form> <br>
-<div th:text="${msg}"></div>
+<div class="container" style="width: 300px;  margin: auto;">
+    <form class="form-signin" method="POST" th:action="@{/user/registration}">
+        <h4 style="text-align: center" class="form-heading">Please fill out registration form</h4>
+        <div class="form-group">
+            <input name="email" type="text" class="form-control" placeholder="Email" required/>
+        </div>
+        <div class="form-group">
+            <input name="password" type="text" class="form-control" placeholder="Password" required/>
+        </div>
+        <div class="form-group">
+            <input name="firstName" type="text" class="form-control" placeholder="First name" required/>
+        </div>
+        <div class="form-group">
+            <input name="lastName" type="text" class="form-control" placeholder="Last name" required/>
+        </div>
+        <button class="btn btn-primary form-control" type="submit">Register</button>
+        <span th:text="${msg}"></span>
+    </form>
+</div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package homework8Gradle.homework8Gradle.service;
 
 import homework8Gradle.homework8Gradle.exception.NoSuchEntityFoundException;
-import homework8Gradle.homework8Gradle.model.EntityMapper;
+import homework8Gradle.homework8Gradle.model.mapper.EntityMapper;
 import homework8Gradle.homework8Gradle.model.dao.Manufacturer;
 import homework8Gradle.homework8Gradle.model.dto.ManufacturerDto;
 import homework8Gradle.homework8Gradle.repository.ManufacturerRepository;
