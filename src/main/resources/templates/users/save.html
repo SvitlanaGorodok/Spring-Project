@@ -2,32 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Save user</title>
-  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Create user</title>
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-  <body>
-    <div th:insert="navbar :: navbar"></div>
+<body>
+<div th:insert="navbar :: navbar"></div>
+<div style="margin: 10px">
+    <form id="createForm" name="createForm" th:method="POST" th:action="@{/users/save}">
+        <div class="form-group">
+            <input class="form-control" type="text" name="firstName" placeholder="First name" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="lastName" placeholder="Last name" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                   title="Please provide correct email format: e.g., name@gmail.com" placeholder="Email" required>
+        </div>
+        <h5> Role
+            <select class="form-control" id="role" name="roleId" required>
+                <option style="display:none">
+                <option th:each="role : ${roles}"
+                        th:value="${role.id}"
+                        th:text="${role.name}">
+                </option>
+            </select>
+        </h5>
+        <p>
+            <button class="btn btn-primary" type="submit" value="Send">Create</button>
+            <input class="btn btn-secondary" type="reset" value="Reset form">
+        </p>
+        <p>
+            <a class="btn btn-info" title="Back to list"
+               th:href="@{/users}">Back to users list </a>
+        </p>
+    </form>
+</div>
+<script th:inline="javascript">
+    let myForm = document.getElementById('createForm');
+    myForm.addEventListener('submit', validateForm);
 
-    <form action="/user/save" method="POST">
-      Id (fulfill if exist): <br>
-      <input type="text" name="id"> <br>
-      First name: <br>
-      <input type="text" name="firstName"> <br>
-      Last name: <br>
-      <input type="text" name="lastName"> <br>
-      Email: <br>
-      <input type="text" name="email"> <br>
-      Roles: <br>
-        <input type="checkbox" name="role" th:value="ROLE_USER"/>
-        <label th:text="ROLE_USER"></label> <br>
-        <input type="checkbox" name="role" th:value="ROLE_ADMIN"/>
-        <label th:text="ROLE_ADMIN"></label> <br>
-      <button type="submit">Save</button>
-      <input type = "reset" value = "Reset form">
-    </form> <br>
-    <div  th:text="${msg}"></div>
-  </body>
+    function validateForm(e) {
+        let email = document.createForm.email.value;
+        let emails = [[${emails}]];
+        if(emails.includes(email)) {
+            e.preventDefault();
+            alert('An account with email address ' + email + ' already exists!');
+        }
+    }
+</script>
+</body>
 </html>

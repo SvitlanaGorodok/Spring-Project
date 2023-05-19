@@ -59,4 +59,8 @@ public class UserService implements CrudService<UserDto>{
         user.setPassword(encoder.encode(user.getPassword()));
         save(user);
     }
+
+    public List<String> findAllEmails(){
+        return repository.findAllEmails();
+    }
 }

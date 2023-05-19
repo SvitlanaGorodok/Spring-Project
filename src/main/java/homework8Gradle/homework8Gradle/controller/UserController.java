@@ -2,6 +2,7 @@ package homework8Gradle.homework8Gradle.controller;
 
 import homework8Gradle.homework8Gradle.exception.UserAlreadyExistException;
 import homework8Gradle.homework8Gradle.model.dto.UserDto;
+import homework8Gradle.homework8Gradle.service.RoleService;
 import homework8Gradle.homework8Gradle.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,47 +12,37 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RestController
 public class UserController {
-    private final UserService service;
+    private final UserService userService;
+    private final RoleService roleService;
+
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/showall")
     public ModelAndView showAll() {
         ModelAndView model = new ModelAndView("/users/findall");
-        model.addObject("users", service.findAll());
-        return model;
-    }
-
-    @Secured(value = {"ROLE_ADMIN"})
-    @GetMapping("/findbyid")
-    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
-        ModelAndView model = new ModelAndView("/users/findbyid");
-        model.addObject("users", service.findById(id));
+        model.addObject("users", userService.findAll());
         return model;
     }
 
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/save")
-    public ModelAndView saveForm(@RequestParam(name = "msg", required = false, defaultValue = "") String msg){
+    public ModelAndView saveForm(){
         ModelAndView model = new ModelAndView("/users/save");
-        model.addObject("msg", msg);
+        model.addObject("roles", roleService.findAll());
+        model.addObject("emails", userService.findAllEmails());
         return model;
     }
 
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("userDto") UserDto userDto){
-        service.save(userDto);
-        RedirectView redirect = new RedirectView("/user/save");
-        redirect.addStaticAttribute("msg", "User successfully saved!");
-        return redirect;
+        userService.save(userDto);
+        return new RedirectView("/users");
     }
 
     @Secured(value = {"ROLE_ADMIN"})
@@ -65,9 +56,9 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/delete")
     public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
-        RedirectView redirect = new RedirectView("/user/delete");
+        RedirectView redirect = new RedirectView("/users/delete");
         try{
-            service.deleteById(id);
+            userService.deleteById(id);
             redirect.addStaticAttribute("msg", "User successfully deleted!");
         } catch (EmptyResultDataAccessException ex){
             redirect.addStaticAttribute("msg", "User doesn't exist!");
@@ -86,9 +77,9 @@ public class UserController {
     public RedirectView registration(@Validated @ModelAttribute("user") UserDto user){
         RedirectView redirect = new RedirectView("/login");
         try {
-            service.register(user);
+            userService.register(user);
         } catch (UserAlreadyExistException ex) {
-            redirect.setUrl("/user/registration");
+            redirect.setUrl("/users/registration");
             redirect.addStaticAttribute("msg", "Account with provided email already exists!");
             return redirect;
         }
