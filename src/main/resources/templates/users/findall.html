@@ -27,12 +27,12 @@
           <td th:text="${user.email}"></td>
           <td th:text="${user.userDetails}"></td>
           <td>
-            <a class="btn btn-primary btn-sm" title="Edit"
-               th:href="@{/employees/update/{id}(id=${user.id})}">Edit
-            </a>
-            <a class="btn btn-danger btn-sm" title="Delete"
-               th:href="@{/employees/delete/{id}(id=${user.id})}">Delete
-            </a>
+            <form th:method="POST" th:action="@{/users/delete/{id}(id=${user.id})}">
+              <a class="btn btn-primary btn-sm" title="Edit"
+                 th:href="@{/users/update/{id}(id=${user.id})}">Edit
+              </a>
+              <button class="btn btn-danger btn-sm" type="submit" value="Delete">Delete</button>
+            </form>
           </td>
         </tr>
       </table>

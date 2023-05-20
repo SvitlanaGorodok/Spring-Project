@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Update user</title>
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:insert="navbar :: navbar"></div>
+<div style="margin: 10px">
+  <form id="updateForm" name="updateForm"  th:method="POST" th:action="@{/users/update}">
+    <input hidden="hidden" th:value="${user.id}" name="id"/>
+    <input hidden="hidden" th:value="${user.password}" name="password"/>
+    <div class="form-group">
+      <input class="form-control" type="text" th:value="${user.firstName}" name="firstName" placeholder="First name" required>
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="text" th:value="${user.lastName}" name="lastName" placeholder="Last name" required>
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="text" th:value="${user.email}" name="email"
+             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+             title="Please provide correct email format: e.g., name@gmail.com" placeholder="Email" required>
+    </div>
+    <h5> Role
+      <select class="form-control" id="role" name="roleId" required>
+        <option style="display:none">
+        <option th:each="role : ${roles}"
+                th:value="${role.id}"
+                th:text="${role.name}"
+                th:selected="${role.id} == ${user.roleId}">
+        </option>
+      </select>
+    </h5>
+    <p>
+      <button class="btn btn-primary" type="submit" value="Send">Save</button>
+      <input class="btn btn-secondary" type="reset" value="Reset form">
+    </p>
+    <p>
+      <a class="btn btn-info" title="Back to list"
+         th:href="@{/users}">Back to users list</a>
+    </p>
+  </form>
+</div>
+<script th:inline="javascript">
+    let myForm = document.getElementById('updateForm');
+    myForm.addEventListener('submit', validateForm);
+
+    function validateForm(e) {
+        let email = document.updateForm.email.value;
+        let emails = [[${emails}]];
+        if(emails.includes(email)) {
+            e.preventDefault();
+            alert('An account with email address ' + email + ' already exists!');
+        }
+    }
+</script>
+</body>
+</html>

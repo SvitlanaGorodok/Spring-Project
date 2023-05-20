@@ -25,6 +25,7 @@ public class UserService implements CrudService<UserDto>{
     public UserDto save(UserDto user) {
         if (user.getId() == null){
             user.setId(UUID.randomUUID());
+            user.setPassword(encoder.encode(user.getEmail()));
         }
         User saved = repository.save(mapper.userToDao(user));
         return mapper.userToDto(saved);
@@ -63,4 +64,5 @@ public class UserService implements CrudService<UserDto>{
     public List<String> findAllEmails(){
         return repository.findAllEmails();
     }
+
 }
