@@ -16,15 +16,17 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements CrudService<UserDto>{
+public class UserService implements CrudService<UserDto> {
     private final UserRepository repository;
     private final BCryptPasswordEncoder encoder;
     private final EntityMapper mapper;
 
     @Override
     public UserDto save(UserDto user) {
-        if (user.getId() == null){
+        if (user.getId() == null) {
             user.setId(UUID.randomUUID());
+        }
+        if (user.getPassword() == null) {
             user.setPassword(encoder.encode(user.getEmail()));
         }
         User saved = repository.save(mapper.userToDao(user));
@@ -49,19 +51,15 @@ public class UserService implements CrudService<UserDto>{
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }
-    public void register(UserDto user){
-        if (repository.findByEmail(user.getEmail()).isPresent()) {
-            throw new UserAlreadyExistException(
-                    String.format("User with specified email %s already exist", user.getEmail()));
-        }
+
+    public void register(UserDto user) {
         //Set user role = "ROLE_USER"
         user.setRoleId(UUID.fromString("495c0735-2411-46f2-8d3c-0fd91a636088"));
-
         user.setPassword(encoder.encode(user.getPassword()));
         save(user);
     }
 
-    public List<String> findAllEmails(){
+    public List<String> findAllEmails() {
         return repository.findAllEmails();
     }
 
