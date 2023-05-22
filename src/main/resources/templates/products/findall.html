@@ -10,8 +10,8 @@
 </head>
   <body>
     <div th:insert="navbar :: navbar"></div>
-    <div>
-      <table style="text-align: center" border="1" width="40%" height="40%">
+    <div style="margin: 50px">
+      <table style="text-align: center" border="2" width="100%">
         <tr>
           <td>Id</td>
           <td>Name</td>
@@ -23,8 +23,16 @@
           <td th:text="${product.name}"></td>
           <td th:text="${product.price}"></td>
           <td th:text="${product.productDetails}"></td>
+          <td>
+            <form th:method="POST" th:action="@{/products/delete/{id}(id=${product.id})}">
+              <a class="btn btn-primary btn-sm" title="Edit"
+                 th:href="@{/products/update/{id}(id=${product.id})}">Edit
+              </a>
+              <button class="btn btn-danger btn-sm" type="submit" value="Delete">Delete</button>
+            </form>
+          </td>
         </tr>
-        <table>
+      </table>
     </div>
   </body>
 </html>

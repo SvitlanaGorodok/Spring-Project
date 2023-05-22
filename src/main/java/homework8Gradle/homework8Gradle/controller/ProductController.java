@@ -1,5 +1,6 @@
 package homework8Gradle.homework8Gradle.controller;
 
+import homework8Gradle.homework8Gradle.model.dao.Product;
 import homework8Gradle.homework8Gradle.model.dto.ManufacturerDto;
 import homework8Gradle.homework8Gradle.model.dto.ProductDto;
 import homework8Gradle.homework8Gradle.service.ManufacturerService;
@@ -16,7 +17,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@RequestMapping("/product")
+@RequestMapping("/products")
 @RestController
 public class ProductController {
     private final ProductService service;
@@ -29,17 +30,9 @@ public class ProductController {
         return result;
     }
 
-    @GetMapping("/findbyid")
-    public ModelAndView getById(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
-        ModelAndView result = new ModelAndView("/products/findbyid");
-            result.addObject("products", service.findById(id));
-        return result;
-    }
-
     @GetMapping("/save")
-    public ModelAndView saveForm(@RequestParam(name = "msg", required = false, defaultValue = "") String msg){
+    public ModelAndView saveForm(){
         ModelAndView result = new ModelAndView("/products/save");
-        result.addObject("msg", msg);
         result.addObject("manufacturers", manufacturerService.findAll());
         return result;
     }
@@ -47,28 +40,28 @@ public class ProductController {
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("productDto") ProductDto productDto){
         service.save(productDto);
-        RedirectView redirect = new RedirectView("/product/save");
-        redirect.addStaticAttribute("msg", "Product successfully saved!");
-        return redirect;
+        return new RedirectView("/products");
     }
 
-    @GetMapping("/delete")
-    public ModelAndView deleteForm(@RequestParam(name = "msg", required = false, defaultValue = "") String msg){
-        ModelAndView result = new ModelAndView("/products/delete");
-        result.addObject("msg", msg);
-        return result;
+    @GetMapping("/update/{id}")
+    public ModelAndView updateForm(@PathVariable("id") UUID id){
+        ModelAndView model = new ModelAndView("products/update");
+        ProductDto product = service.findById(id);
+        model.addObject("product", product);
+        model.addObject("manufacturers", manufacturerService.findAll());
+        return model;
     }
 
-    @PostMapping("/delete")
-    public RedirectView delete(@RequestParam(name = "id", required = false, defaultValue = "") UUID id){
-        RedirectView redirect = new RedirectView("/product/delete");
-        try{
-            service.deleteById(id);
-            redirect.addStaticAttribute("msg", "Product successfully deleted!");
-        } catch (EmptyResultDataAccessException ex){
-            redirect.addStaticAttribute("msg", "Product doesn't exist!");
-        }
-        return redirect;
+    @PostMapping("/update")
+    public RedirectView update(@Validated @ModelAttribute("productDto") ProductDto productDto){
+        service.save(productDto);
+        return new RedirectView("/products");
+    }
+
+    @PostMapping("/delete/{id}")
+    public RedirectView delete(@PathVariable("id") UUID id){
+        service.deleteById(id);
+        return new RedirectView("/products");
     }
 
 }
