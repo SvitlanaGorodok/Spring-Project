@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements CrudService<UserDto> {
     private final UserRepository repository;
+    private final RoleService roleService;
     private final BCryptPasswordEncoder encoder;
     private final EntityMapper mapper;
 
@@ -53,8 +54,7 @@ public class UserService implements CrudService<UserDto> {
     }
 
     public void register(UserDto user) {
-        //Set user role = "ROLE_USER"
-        user.setRoleId(UUID.fromString("495c0735-2411-46f2-8d3c-0fd91a636088"));
+        user.setRoleId(roleService.findByName("ROLE_USER"));
         user.setPassword(encoder.encode(user.getPassword()));
         save(user);
     }

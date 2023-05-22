@@ -1,15 +1,8 @@
 package homework8Gradle.homework8Gradle.security;
 
-import homework8Gradle.homework8Gradle.exception.UserAlreadyExistException;
 import homework8Gradle.homework8Gradle.model.dto.UserDto;
 import homework8Gradle.homework8Gradle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
