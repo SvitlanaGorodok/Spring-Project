@@ -23,7 +23,7 @@ public class ProductController {
     private final ProductService service;
     private final ManufacturerService manufacturerService;
 
-    @GetMapping ("/showall")
+    @GetMapping ("")
     public ModelAndView showAll(){
         ModelAndView result = new ModelAndView("/products/findall");
         result.addObject("products", service.findAll());
