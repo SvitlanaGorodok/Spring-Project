@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Save user</title>
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:insert="navbar :: navbar"></div>
+<div style="margin: 10px">
+    <form th:method="POST" th:action="@{/products/update}">
+        <input hidden="hidden" th:value="${product.id}" name="id"/>
+        <div class="form-group">
+            <input class="form-control" type="text" name="name" th:value="${product.name}" placeholder="Name" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="number" name="price" th:value="${product.price}" placeholder="Price"
+                   min="0" required>
+        </div>
+        <h5> Manufacturer
+            <select class="form-control" id="role" name="manufacturerId" required>
+                <option style="display:none">
+                <option th:each="manufacturer : ${manufacturers}"
+                        th:value="${manufacturer.id}"
+                        th:text="${manufacturer.name}"
+                        th:selected="${manufacturer.id} == ${product.manufacturerId}">
+                </option>
+            </select>
+        </h5>
+        <p>
+            <button class="btn btn-primary" type="submit" value="Send">Save</button>
+            <input class="btn btn-secondary" type="reset" value="Reset form">
+        </p>
+        <p>
+            <a class="btn btn-info" title="Back to list"
+               th:href="@{/products}">Back to products list </a>
+        </p>
+    </form>
+</div>
+
+</body>
+</html>

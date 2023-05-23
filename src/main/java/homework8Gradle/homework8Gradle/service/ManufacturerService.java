@@ -45,4 +45,8 @@ public class ManufacturerService implements CrudService<ManufacturerDto>{
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }
+
+    public List<String> findAllNames(){
+        return repository.findAllNames();
+    }
 }

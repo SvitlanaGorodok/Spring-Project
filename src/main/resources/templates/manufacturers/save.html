@@ -10,15 +10,33 @@
 </head>
   <body>
     <div th:insert="navbar :: navbar"></div>
+    <div style="margin: 10px">
+      <form id="createForm" name="createForm" th:method="POST" th:action="@{/manufacturers/save}">
+        <div class="form-group">
+          <input class="form-control" type="text" name="name" placeholder="Name" required>
+        </div>
+        <p>
+          <button class="btn btn-primary" type="submit" value="Send">Create</button>
+          <input class="btn btn-secondary" type="reset" value="Reset form">
+        </p>
+        <p>
+          <a class="btn btn-info" title="Back to list"
+             th:href="@{/manufacturers}">Back to manufacturers list </a>
+        </p>
+      </form>
+    </div>
+    <script th:inline="javascript">
+    let myForm = document.getElementById('createForm');
+    myForm.addEventListener('submit', validateForm);
 
-    <form action="/manufacturer/save" method="POST">
-      Id (fulfill if exist): <br>
-      <input type="text" name="id"> <br>
-      Name: <br>
-      <input type="text" name="name"> <br>
-      <button type="submit">Save</button>
-      <input type = "reset" value = "Reset form">
-    </form> <br>
-    <div th:text="${msg}"></div>
+    function validateForm(e) {
+        let name = document.createForm.name.value;
+        let names = [[${names}]];
+        if(names.includes(name)) {
+            e.preventDefault();
+            alert('Manufacturer with name ' + name + ' already exists!');
+        }
+    }
+</script>
   </body>
 </html>

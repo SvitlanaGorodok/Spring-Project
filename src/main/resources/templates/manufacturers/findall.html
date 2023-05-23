@@ -2,25 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Save user</title>
-  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Save user</title>
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-  <body>
-    <div th:insert="navbar :: navbar"></div>
-    <div>
-      <table style="text-align: center" border="1" width="40%" height="40%">
+<body>
+<div th:insert="navbar :: navbar"></div>
+<div style="margin: 50px">
+    <table style="text-align: center" border="2" width="100%">
         <tr>
-          <td>Id</td>
-          <td>Name</td>
+            <td>Id</td>
+            <td>Name</td>
         </tr>
         <tr th:each="manufacturer : ${manufacturers}">
-          <td th:text="${manufacturer.id}"></td>
-          <td th:text="${manufacturer.name}"></td>
+            <td th:text="${manufacturer.id}"></td>
+            <td th:text="${manufacturer.name}"></td>
+            <td>
+                <form th:method="POST" th:action="@{/manufacturers/delete/{id}(id=${manufacturer.id})}">
+                    <a class="btn btn-primary btn-sm" title="Edit"
+                       th:href="@{/manufacturers/update/{id}(id=${manufacturer.id})}">Edit
+                    </a>
+                    <button class="btn btn-danger btn-sm" type="submit" value="Delete">Delete</button>
+                </form>
+            </td>
         </tr>
-        <table>
-    </div>
-  </body>
+    </table>
+</div>
+</body>
 </html>

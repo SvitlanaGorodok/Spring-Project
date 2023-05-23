@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Save user</title>
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:insert="navbar :: navbar"></div>
+<div style="margin: 10px">
+    <form id="updateForm" name="updateForm" th:method="POST" th:action="@{/manufacturers/update}">
+        <input hidden="hidden" th:value="${manufacturer.id}" name="id"/>
+        <div class="form-group">
+            <input class="form-control" type="text" th:value="${manufacturer.name}" name="name" placeholder="Name"
+                   required>
+        </div>
+        <p>
+            <button class="btn btn-primary" type="submit" value="Send">Save</button>
+            <input class="btn btn-secondary" type="reset" value="Reset form">
+        </p>
+        <p>
+            <a class="btn btn-info" title="Back to list"
+               th:href="@{/manufacturers}">Back to manufacturers list </a>
+        </p>
+    </form>
+</div>
+<script th:inline="javascript">
+    let myForm = document.getElementById('updateForm');
+    myForm.addEventListener('submit', validateForm);
+
+    function validateForm(e) {
+        let name = document.updateForm.name.value;
+        let names = [[${names}]];
+        if(names.includes(name)) {
+            e.preventDefault();
+            alert('Manufacturer with name ' + name + ' already exists!');
+        }
+    }
+</script>
+</body>
+</html>
