@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,17 @@ public class UserService implements CrudService<UserDto> {
 
     public List<String> findAllEmails() {
         return repository.findAllEmails();
+    }
+
+    public UserDto findByEmail(String email){
+        User userByEmail = repository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchEntityFoundException("User with email " + email + "not found!"));
+        return mapper.userToDto(userByEmail);
+    }
+
+    public void changePassword(UserDto user){
+        user.setPassword(encoder.encode(user.getPassword()));
+        save(user);
     }
 
 }

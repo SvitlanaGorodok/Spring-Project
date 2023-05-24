@@ -2,10 +2,13 @@ package homework8Gradle.homework8Gradle.controller;
 
 import homework8Gradle.homework8Gradle.exception.UserAlreadyExistException;
 import homework8Gradle.homework8Gradle.model.dto.UserDto;
+import homework8Gradle.homework8Gradle.security.MyUserDetailsService;
+import homework8Gradle.homework8Gradle.security.UserPrincipal;
 import homework8Gradle.homework8Gradle.service.RoleService;
 import homework8Gradle.homework8Gradle.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -70,5 +73,21 @@ public class UserController {
     public RedirectView delete(@PathVariable("id") UUID id){
         userService.deleteById(id);
         return new RedirectView("/users");
+    }
+
+    @GetMapping("/changepassword")
+    public ModelAndView changePasswordForm(){
+        ModelAndView model = new ModelAndView("/users/changepassword");
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        UserDto user = userService.findByEmail(userPrincipal.getUsername());
+        model.addObject("user", user);
+        return model;
+    }
+
+    @PostMapping("/changepassword")
+    public RedirectView changePassword(@Validated @ModelAttribute("userDto") UserDto userDto){
+        userService.changePassword(userDto);
+        return new RedirectView("/");
     }
 }
