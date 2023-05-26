@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find</title>
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<div style="margin: 10px">
+    <form th:method="POST" th:action="@{/users/find}">
+        <div class="form-group">
+            <input class="form-control" type="text" name="firstName" placeholder="First name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="lastName" placeholder="Last name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="email" placeholder="Email">
+        </div>
+        <h5> Role
+            <select class="form-control" id="role" name="roleId">
+                <option style="display:none">
+                <option th:each="role : ${roles}"
+                        th:value="${role.id}"
+                        th:text="${role.name}">
+                </option>
+            </select>
+        </h5>
+        <p>
+            <button class="btn btn-primary" type="submit">Find</button>
+            <input class="btn btn-secondary" type="reset" value="Reset form">
+        </p>
+        <p>
+            <a class="btn btn-info" title="Back to list"
+               th:href="@{/users}">Back to users list </a>
+        </p>
+    </form>
+    <div th:if="${not #lists.isEmpty(users)}">
+        <table style="text-align: center" border="2" width="100%">
+            <tr>
+                <td>Id</td>
+                <td>First name</td>
+                <td>Last name</td>
+                <td>Email</td>
+                <td>Role</td>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.userDetails}"></td>
+                <td>
+                    <form th:method="POST" th:action="@{/users/delete/{id}(id=${user.id})}">
+                        <a class="btn btn-primary btn-sm" title="Edit"
+                           th:href="@{/users/update/{id}(id=${user.id})}">Edit
+                        </a>
+                        <button class="btn btn-danger btn-sm" type="submit" value="Delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(users)}">
+        <span>No results!</span>
+    </div>
+</div>
+</body>
+</html>

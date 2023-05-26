@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -75,4 +74,22 @@ public class UserService implements CrudService<UserDto> {
         save(user);
     }
 
+    public List<UserDto> findByParameters(UserDto userDto) {
+        String firstName = sqlFormat(userDto.getFirstName());
+        String lastName = sqlFormat(userDto.getLastName());
+        String email = sqlFormat(userDto.getEmail());
+        List<User> users = repository.findByParameters(
+                firstName, lastName, email,
+                userDto.getRoleId());
+        return users.stream()
+                .map(mapper::userToDto)
+                .collect(Collectors.toList());
+    }
+
+    private String sqlFormat(String text){
+        if(text == null || text.isEmpty()){
+            return "%%";
+        }
+        return "%" + text.toLowerCase() + "%";
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -89,5 +90,23 @@ public class UserController {
     public RedirectView changePassword(@Validated @ModelAttribute("userDto") UserDto userDto){
         userService.changePassword(userDto);
         return new RedirectView("/");
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @GetMapping("/find")
+    public ModelAndView findForm(){
+        ModelAndView model = new ModelAndView("users/find");
+        model.addObject("roles", roleService.findAll());
+        return model;
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping("/find")
+    public RedirectView find(@Validated @ModelAttribute("userDto") UserDto userDto){
+        ModelAndView model = new ModelAndView("users/find");
+        List<UserDto> users = userService.findByParameters(userDto);
+        model.addObject("users", users);
+        model.addObject("roles", roleService.findAll());
+        return new RedirectView("/users/find");
     }
 }
