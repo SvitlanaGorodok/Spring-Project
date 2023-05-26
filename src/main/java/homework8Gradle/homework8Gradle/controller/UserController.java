@@ -102,11 +102,11 @@ public class UserController {
 
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/find")
-    public RedirectView find(@Validated @ModelAttribute("userDto") UserDto userDto){
+    public ModelAndView find(@Validated @ModelAttribute("userDto") UserDto userDto){
         ModelAndView model = new ModelAndView("users/find");
         List<UserDto> users = userService.findByParameters(userDto);
         model.addObject("users", users);
         model.addObject("roles", roleService.findAll());
-        return new RedirectView("/users/find");
+        return model;
     }
 }
