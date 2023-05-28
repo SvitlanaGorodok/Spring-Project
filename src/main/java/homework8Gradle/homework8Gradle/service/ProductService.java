@@ -47,8 +47,13 @@ public class ProductService implements CrudService<ProductDto>{
         repository.deleteById(id);
     }
 
-    public List<ProductDto> findByParameters(FindProductParam findProductParam) {
-        return null;
+    public List<ProductDto> findByParameters(FindProductParam productParam) {
+        String name = sqlFormat(productParam.getName());
+        List<Product> products = repository.findByParameters(name,
+                productParam.getOverPrice(), productParam.getUnderPrice(), productParam.getManufacturerId());
+        return products.stream()
+                .map(mapper::productToDto)
+                .collect(Collectors.toList());
     }
 
     private String sqlFormat(String text){

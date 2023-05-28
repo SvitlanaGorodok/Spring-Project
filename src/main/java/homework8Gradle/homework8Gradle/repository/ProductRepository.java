@@ -14,9 +14,10 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query(value = "SELECT p.* FROM products p " +
             "WHERE LOWER(p.name) LIKE :name " +
-            "AND p.start_date >= COALESCE( :startDateFrom , p.start_date) " +
-            "AND p.start_date <= COALESCE( :startDateTo , p.start_date)",
+            "AND p.price >= COALESCE( :overPrice , p.price) " +
+            "AND p.price <= COALESCE( :underPrice , p.price)" +
+            "AND p.manufacturer_id = COALESCE( :manufacturerId , p.manufacturer_id)",
             nativeQuery = true)
-    List<Product> findByParameters(@Param("name") String name, @Param("startDateFrom") Long startDateFrom,
-                                      @Param("startDateTo") Long startDateTo);
+    List<Product> findByParameters(@Param("name") String name, @Param("overPrice") Long overPrice,
+                                      @Param("underPrice") Long underPrice, UUID manufacturerId);
 }
