@@ -1,6 +1,7 @@
 package homework8Gradle.homework8Gradle.service;
 
 import homework8Gradle.homework8Gradle.exception.NoSuchEntityFoundException;
+import homework8Gradle.homework8Gradle.model.dto.FindProductParam;
 import homework8Gradle.homework8Gradle.model.mapper.EntityMapper;
 import homework8Gradle.homework8Gradle.model.dao.Product;
 import homework8Gradle.homework8Gradle.model.dto.ProductDto;
@@ -44,5 +45,16 @@ public class ProductService implements CrudService<ProductDto>{
     @Override
     public void deleteById(UUID id) {
         repository.deleteById(id);
+    }
+
+    public List<ProductDto> findByParameters(FindProductParam findProductParam) {
+        return null;
+    }
+
+    private String sqlFormat(String text){
+        if(text == null || text.isEmpty()){
+            return "%%";
+        }
+        return "%" + text.toLowerCase() + "%";
     }
 }

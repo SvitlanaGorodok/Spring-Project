@@ -1,12 +1,11 @@
 package homework8Gradle.homework8Gradle.controller;
 
-import homework8Gradle.homework8Gradle.model.dao.Product;
-import homework8Gradle.homework8Gradle.model.dto.ManufacturerDto;
+import homework8Gradle.homework8Gradle.model.dto.FindProductParam;
 import homework8Gradle.homework8Gradle.model.dto.ProductDto;
+
 import homework8Gradle.homework8Gradle.service.ManufacturerService;
 import homework8Gradle.homework8Gradle.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,7 +13,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/products")
@@ -62,6 +60,22 @@ public class ProductController {
     public RedirectView delete(@PathVariable("id") UUID id){
         service.deleteById(id);
         return new RedirectView("/products");
+    }
+
+    @GetMapping("/find")
+    public ModelAndView findForm(){
+        ModelAndView model = new ModelAndView("products/find");
+        model.addObject("manufacturers", manufacturerService.findAll());
+        return model;
+    }
+
+    @PostMapping("/find")
+    public ModelAndView find(@Validated @ModelAttribute("findProductParam") FindProductParam findProductParam){
+        ModelAndView model = new ModelAndView("products/find");
+        List<ProductDto> products = service.findByParameters(findProductParam);
+        model.addObject("products", products);
+        model.addObject("manufacturers", manufacturerService.findAll());
+        return model;
     }
 
 }

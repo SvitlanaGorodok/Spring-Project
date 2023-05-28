@@ -11,22 +11,22 @@
 <body>
 <div th:replace="~{navbar :: navbar}"></div>
 <div style="margin: 10px">
-    <form th:method="POST" th:action="@{/products/find}">
+    <form th:method="POST" th:action="@{/users/find}">
         <div class="form-group">
-            <input class="form-control" type="text" name="name" placeholder="Name">
+            <input class="form-control" type="text" name="firstName" placeholder="First name">
         </div>
         <div class="form-group">
-            <input class="form-control" type="number" name="underPrice" placeholder="Price under" min="0">
+            <input class="form-control" type="text" name="lastName" placeholder="Last name">
         </div>
         <div class="form-group">
-            <input class="form-control" type="number" name="overPrice" placeholder="Price over" min="0">
+            <input class="form-control" type="text" name="email" placeholder="Email">
         </div>
-        <h5> Manufacturer
-            <select class="form-control" id="manufacturer" name="manufacturerId" required>
+        <h5> Role
+            <select class="form-control" id="role" name="roleId">
                 <option style="display:none">
-                <option th:each="manufacturer : ${manufacturers}"
-                        th:value="${manufacturer.id}"
-                        th:text="${manufacturer.name}">
+                <option th:each="role : ${roles}"
+                        th:value="${role.id}"
+                        th:text="${role.name}">
                 </option>
             </select>
         </h5>
@@ -36,26 +36,29 @@
         </p>
         <p>
             <a class="btn btn-info" title="Back to list"
-               th:href="@{/users}">Back to products list </a>
+               th:href="@{/users}">Back to users list </a>
         </p>
     </form>
-    <div th:if="${not #lists.isEmpty(users)}">
+    <div th:if="${not #lists.isEmpty(products)}">
         <table style="text-align: center" border="2" width="100%">
             <tr>
                 <td>Id</td>
-                <td>Name</td>
-                <td>Price</td>
-                <td>Manufacturer</td>
+                <td>First name</td>
+                <td>Last name</td>
+                <td>Email</td>
+                <td>Role</td>
+                <td>User managing</td>
             </tr>
-            <tr th:each="product : ${products}">
-                <td th:text="${product.id}"></td>
-                <td th:text="${product.name}"></td>
-                <td th:text="${product.price}"></td>
-                <td th:text="${product.productDetails}"></td>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.userDetails}"></td>
                 <td>
-                    <form th:method="POST" th:action="@{/products/delete/{id}(id=${product.id})}">
+                    <form th:method="POST" th:action="@{/users/delete/{id}(id=${user.id})}">
                         <a class="btn btn-primary btn-sm" title="Edit"
-                           th:href="@{/products/update/{id}(id=${product.id})}">Edit
+                           th:href="@{/users/update/{id}(id=${user.id})}">Edit
                         </a>
                         <button class="btn btn-danger btn-sm" type="submit" value="Delete">Delete</button>
                     </form>
@@ -63,7 +66,7 @@
             </tr>
         </table>
     </div>
-    <div th:if="${#lists.isEmpty(users)}">
+    <div th:if="${#lists.isEmpty(products)}">
         <span>No results!</span>
     </div>
 </div>
