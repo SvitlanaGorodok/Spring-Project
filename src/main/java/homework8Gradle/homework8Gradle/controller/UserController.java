@@ -1,12 +1,11 @@
 package homework8Gradle.homework8Gradle.controller;
 
-import homework8Gradle.homework8Gradle.exception.UserAlreadyExistException;
 import homework8Gradle.homework8Gradle.model.dto.UserDto;
-import homework8Gradle.homework8Gradle.security.MyUserDetailsService;
 import homework8Gradle.homework8Gradle.security.UserPrincipal;
 import homework8Gradle.homework8Gradle.service.RoleService;
 import homework8Gradle.homework8Gradle.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @RestController
+@Slf4j
 public class UserController {
     private final UserService userService;
     private final RoleService roleService;
@@ -45,6 +45,7 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("userDto") UserDto userDto){
+        log.info("Handling create user: " + userDto);
         userService.save(userDto);
         return new RedirectView("/users");
     }
@@ -65,6 +66,7 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/update")
     public RedirectView update(@Validated @ModelAttribute("userDto") UserDto userDto){
+        log.info("Handling update user: " + userDto);
         userService.save(userDto);
         return new RedirectView("/users");
     }
@@ -72,6 +74,7 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/delete/{id}")
     public RedirectView delete(@PathVariable("id") UUID id){
+        log.info("Handling delete user with id: " + id);
         userService.deleteById(id);
         return new RedirectView("/users");
     }
@@ -88,6 +91,7 @@ public class UserController {
 
     @PostMapping("/changepassword")
     public RedirectView changePassword(@Validated @ModelAttribute("userDto") UserDto userDto){
+        log.info("Handling change password for user:" + userDto);
         userService.changePassword(userDto);
         return new RedirectView("/");
     }

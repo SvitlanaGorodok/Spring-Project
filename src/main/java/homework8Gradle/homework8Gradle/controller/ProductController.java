@@ -6,6 +6,7 @@ import homework8Gradle.homework8Gradle.model.dto.ProductDto;
 import homework8Gradle.homework8Gradle.service.ManufacturerService;
 import homework8Gradle.homework8Gradle.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/products")
 @RestController
+@Slf4j
 public class ProductController {
     private final ProductService service;
     private final ManufacturerService manufacturerService;
@@ -37,6 +39,7 @@ public class ProductController {
 
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("productDto") ProductDto productDto){
+        log.info("Handling create product: " + productDto);
         service.save(productDto);
         return new RedirectView("/products");
     }
@@ -52,12 +55,14 @@ public class ProductController {
 
     @PostMapping("/update")
     public RedirectView update(@Validated @ModelAttribute("productDto") ProductDto productDto){
+        log.info("Handling update product: " + productDto);
         service.save(productDto);
         return new RedirectView("/products");
     }
 
     @PostMapping("/delete/{id}")
     public RedirectView delete(@PathVariable("id") UUID id){
+        log.info("Handling delete product with id: " + id);
         service.deleteById(id);
         return new RedirectView("/products");
     }

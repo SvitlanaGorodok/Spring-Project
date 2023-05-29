@@ -3,6 +3,7 @@ package homework8Gradle.homework8Gradle.controller;
 import homework8Gradle.homework8Gradle.model.dto.ManufacturerDto;
 import homework8Gradle.homework8Gradle.service.ManufacturerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/manufacturers")
 @RestController
+@Slf4j
 public class ManufacturerController {
 
     private final ManufacturerService service;
@@ -33,6 +35,7 @@ public class ManufacturerController {
 
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("manufacturerDto") ManufacturerDto manufacturerDto){
+        log.info("Handling create manufacturer: " + manufacturerDto);
         service.save(manufacturerDto);
         return new RedirectView("/manufacturers");
     }
@@ -50,12 +53,14 @@ public class ManufacturerController {
 
     @PostMapping("/update")
     public RedirectView update(@Validated @ModelAttribute("manufacturerDto") ManufacturerDto manufacturerDto){
+        log.info("Handling update manufacturer: " + manufacturerDto);
         service.save(manufacturerDto);
         return new RedirectView("/manufacturers");
     }
 
     @PostMapping("/delete/{id}")
     public RedirectView delete(@PathVariable("id") UUID id){
+        log.info("Handling delete manufacturer with id: " + id);
         service.deleteById(id);
         return new RedirectView("/manufacturers");
     }
