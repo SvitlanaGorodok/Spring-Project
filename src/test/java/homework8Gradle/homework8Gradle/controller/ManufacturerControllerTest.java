@@ -57,7 +57,17 @@ class ManufacturerControllerTest {
     }
 
     @Test
-    void saveForm() {
+    void saveForm() throws Exception{
+        List<String> names = new ArrayList<>();
+        names.add("name1");
+        names.add("name2");
+
+        when(service.findAllNames()).thenReturn(names);
+
+        mockMvc.perform(get("/manufacturers/save"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/manufacturers/save"))
+                .andExpect(model().attribute("names", hasSize(2)));
     }
 
     @Test
