@@ -13,11 +13,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class ManufacturerControllerTest {
@@ -71,7 +73,12 @@ class ManufacturerControllerTest {
     }
 
     @Test
-    void save() {
+    void save() throws Exception{
+        mockMvc.perform(post("/manufacturers/save")
+                        .param("name", "name")
+                        .flashAttr("manufacturerDto", new ManufacturerDto()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/manufacturers"));
     }
 
     @Test
@@ -83,6 +90,9 @@ class ManufacturerControllerTest {
     }
 
     @Test
-    void delete() {
+    void delete() throws Exception{
+        mockMvc.perform(get("/manufacturers/delete/{id}", UUID.randomUUID().toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/manufacturers"));
     }
 }
