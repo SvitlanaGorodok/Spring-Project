@@ -54,7 +54,7 @@ class ManufacturerControllerTest {
 
         mockMvc.perform(get("/manufacturers"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/manufacturers/findall"))
+                .andExpect(view().name("manufacturers/findall"))
                 .andExpect(model().attribute("manufacturers", hasSize(2)));
     }
 
@@ -66,9 +66,10 @@ class ManufacturerControllerTest {
 
         when(service.findAllNames()).thenReturn(names);
 
-        mockMvc.perform(get("/manufacturers/save"))
+        mockMvc.perform(get("/manufacturers/save")
+                        .param("names", names.toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/manufacturers/save"))
+                .andExpect(view().name("manufacturers/save"))
                 .andExpect(model().attribute("names", hasSize(2)));
     }
 

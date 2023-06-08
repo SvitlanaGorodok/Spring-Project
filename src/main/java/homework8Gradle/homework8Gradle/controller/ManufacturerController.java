@@ -4,6 +4,7 @@ import homework8Gradle.homework8Gradle.model.dto.ManufacturerDto;
 import homework8Gradle.homework8Gradle.service.ManufacturerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,21 +15,21 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/manufacturers")
-@RestController
+@Controller
 @Slf4j
 public class ManufacturerController {
 
     private final ManufacturerService service;
     @GetMapping("")
     public ModelAndView showAll(){
-        ModelAndView result = new ModelAndView("/manufacturers/findall");
+        ModelAndView result = new ModelAndView("manufacturers/findall");
         result.addObject("manufacturers", service.findAll());
         return result;
     }
 
     @GetMapping("/save")
     public ModelAndView saveForm(){
-        ModelAndView model = new ModelAndView("/manufacturers/save");
+        ModelAndView model = new ModelAndView("manufacturers/save");
         model.addObject("names", service.findAllNames());
         return model;
     }
@@ -42,7 +43,7 @@ public class ManufacturerController {
 
     @GetMapping("/update/{id}")
     public ModelAndView updateForm(@PathVariable("id") UUID id){
-        ModelAndView model = new ModelAndView("/manufacturers/update");
+        ModelAndView model = new ModelAndView("manufacturers/update");
         ManufacturerDto manufacturer = service.findById(id);
         model.addObject("manufacturer", manufacturer);
         model.addObject("names", service.findAllNames().stream()
