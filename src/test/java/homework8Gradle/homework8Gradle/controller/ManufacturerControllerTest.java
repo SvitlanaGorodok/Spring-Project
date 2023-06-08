@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,7 +58,7 @@ class ManufacturerControllerTest {
     }
 
     @Test
-    void saveForm() throws Exception{
+    void saveForm() throws Exception {
         List<String> names = new ArrayList<>();
         names.add("name1");
         names.add("name2");
@@ -74,7 +73,7 @@ class ManufacturerControllerTest {
     }
 
     @Test
-    void save() throws Exception{
+    void save() throws Exception {
         mockMvc.perform(post("/manufacturers/save")
                         .param("name", "name")
                         .flashAttr("manufacturerDto", new ManufacturerDto()))
@@ -83,16 +82,39 @@ class ManufacturerControllerTest {
     }
 
     @Test
-    void updateForm() {
+    void updateForm() throws Exception {
+        List<String> names = new ArrayList<>();
+        names.add("name1");
+        names.add("name2");
+
+        UUID id = UUID.randomUUID();
+
+        ManufacturerDto manufacturer = new ManufacturerDto();
+        manufacturer.setId(id);
+        manufacturer.setName("name");
+
+        when(service.findAllNames()).thenReturn(names);
+        when(service.findById(id)).thenReturn(manufacturer);
+
+        mockMvc.perform(get("/manufacturers/update/{id}", id.toString()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("manufacturers/update"))
+                .andExpect(model().attribute("manufacturer", manufacturer))
+                .andExpect(model().attribute("names", hasSize(2)));
     }
 
     @Test
-    void update() {
+    void update() throws Exception {
+        mockMvc.perform(post("/manufacturers/update")
+                        .param("name", "name")
+                        .flashAttr("manufacturerDto", new ManufacturerDto()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/manufacturers"));
     }
 
     @Test
-    void delete() throws Exception{
-        mockMvc.perform(get("/manufacturers/delete/{id}", UUID.randomUUID().toString()))
+    void delete() throws Exception {
+        mockMvc.perform(post("/manufacturers/delete/{id}", UUID.randomUUID().toString()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/manufacturers"));
     }
