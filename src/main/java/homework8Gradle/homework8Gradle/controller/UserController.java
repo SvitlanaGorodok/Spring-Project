@@ -63,13 +63,6 @@ public class UserController {
         return model;
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
-    @PostMapping("/update")
-    public RedirectView update(@Validated @ModelAttribute("userDto") UserDto userDto){
-        log.info("Handling update user: " + userDto);
-        userService.save(userDto);
-        return new RedirectView("/users");
-    }
 
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/delete/{id}")

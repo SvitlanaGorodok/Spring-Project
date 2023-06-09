@@ -36,7 +36,7 @@ public class ManufacturerController {
 
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("manufacturerDto") ManufacturerDto manufacturerDto){
-        log.info("Handling create manufacturer: " + manufacturerDto);
+        log.info("Handling save manufacturer: " + manufacturerDto);
         service.save(manufacturerDto);
         return new RedirectView("/manufacturers");
     }
@@ -50,13 +50,6 @@ public class ManufacturerController {
                 .filter(n -> !n.equals(manufacturer.getName()))
                 .collect(Collectors.toList()));
         return model;
-    }
-
-    @PostMapping("/update")
-    public RedirectView update(@Validated @ModelAttribute("manufacturerDto") ManufacturerDto manufacturerDto){
-        log.info("Handling update manufacturer: " + manufacturerDto);
-        service.save(manufacturerDto);
-        return new RedirectView("/manufacturers");
     }
 
     @PostMapping("/delete/{id}")

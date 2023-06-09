@@ -7,6 +7,7 @@ import homework8Gradle.homework8Gradle.service.ManufacturerService;
 import homework8Gradle.homework8Gradle.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RequestMapping("/products")
-@RestController
+@Controller
 @Slf4j
 public class ProductController {
     private final ProductService service;
@@ -25,21 +26,21 @@ public class ProductController {
 
     @GetMapping ("")
     public ModelAndView showAll(){
-        ModelAndView result = new ModelAndView("/products/findall");
+        ModelAndView result = new ModelAndView("products/findall");
         result.addObject("products", service.findAll());
         return result;
     }
 
     @GetMapping("/save")
     public ModelAndView saveForm(){
-        ModelAndView result = new ModelAndView("/products/save");
+        ModelAndView result = new ModelAndView("products/save");
         result.addObject("manufacturers", manufacturerService.findAll());
         return result;
     }
 
     @PostMapping("/save")
     public RedirectView save(@Validated @ModelAttribute("productDto") ProductDto productDto){
-        log.info("Handling create product: " + productDto);
+        log.info("Handling save product: " + productDto);
         service.save(productDto);
         return new RedirectView("/products");
     }
@@ -51,13 +52,6 @@ public class ProductController {
         model.addObject("product", product);
         model.addObject("manufacturers", manufacturerService.findAll());
         return model;
-    }
-
-    @PostMapping("/update")
-    public RedirectView update(@Validated @ModelAttribute("productDto") ProductDto productDto){
-        log.info("Handling update product: " + productDto);
-        service.save(productDto);
-        return new RedirectView("/products");
     }
 
     @PostMapping("/delete/{id}")

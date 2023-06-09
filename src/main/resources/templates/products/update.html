@@ -11,7 +11,7 @@
 <body>
 <div th:insert="navbar :: navbar"></div>
 <div style="margin: 10px">
-    <form th:method="POST" th:action="@{/products/update}">
+    <form th:method="POST" th:action="@{/products/save}">
         <input hidden="hidden" th:value="${product.id}" name="id"/>
         <div class="form-group">
             <input class="form-control" type="text" name="name" th:value="${product.name}" placeholder="Name" required>

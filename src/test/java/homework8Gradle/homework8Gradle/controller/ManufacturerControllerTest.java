@@ -65,8 +65,7 @@ class ManufacturerControllerTest {
 
         when(service.findAllNames()).thenReturn(names);
 
-        mockMvc.perform(get("/manufacturers/save")
-                        .param("names", names.toString()))
+        mockMvc.perform(get("/manufacturers/save"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("manufacturers/save"))
                 .andExpect(model().attribute("names", hasSize(2)));
@@ -101,15 +100,6 @@ class ManufacturerControllerTest {
                 .andExpect(view().name("manufacturers/update"))
                 .andExpect(model().attribute("manufacturer", manufacturer))
                 .andExpect(model().attribute("names", hasSize(2)));
-    }
-
-    @Test
-    void update() throws Exception {
-        mockMvc.perform(post("/manufacturers/update")
-                        .param("name", "name")
-                        .flashAttr("manufacturerDto", new ManufacturerDto()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/manufacturers"));
     }
 
     @Test
