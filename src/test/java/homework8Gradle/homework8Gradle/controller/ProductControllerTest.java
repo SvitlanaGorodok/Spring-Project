@@ -1,5 +1,6 @@
 package homework8Gradle.homework8Gradle.controller;
 
+import homework8Gradle.homework8Gradle.model.dto.FindProductParam;
 import homework8Gradle.homework8Gradle.model.dto.ManufacturerDto;
 import homework8Gradle.homework8Gradle.model.dto.ProductDto;
 import homework8Gradle.homework8Gradle.service.ManufacturerService;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -122,11 +124,48 @@ class ProductControllerTest {
     }
 
     @Test
-    void findForm() {
+    void findForm() throws Exception {
+        List<ManufacturerDto> manufacturers = new ArrayList<>();
+        manufacturers.add(new ManufacturerDto());
+        manufacturers.add(new ManufacturerDto());
 
+        when(manufacturerService.findAll()).thenReturn(manufacturers);
+
+        mockMvc.perform(get("/products/find"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("products/find"))
+                .andExpect(model().attribute("manufacturers", hasSize(2)));
     }
 
     @Test
-    void find() {
+    void find() throws Exception {
+        FindProductParam findProductParam = new FindProductParam();
+        findProductParam.setName("name");
+        findProductParam.setUnderPrice(0L);
+        findProductParam.setOverPrice(0L);
+        findProductParam.setManufacturerId(UUID.randomUUID());
+
+        List<ProductDto> products = new ArrayList<>();
+        products.add(new ProductDto());
+        products.add(new ProductDto());
+
+        List<ManufacturerDto> manufacturers = new ArrayList<>();
+        manufacturers.add(new ManufacturerDto());
+        manufacturers.add(new ManufacturerDto());
+
+        when(manufacturerService.findAll()).thenReturn(manufacturers);
+        when(service.findByParameters(any(FindProductParam.class))).thenReturn(products);
+
+
+        mockMvc.perform(post("/products/find")
+                        .param("name", "name")
+                        .param("underPrice", "0")
+                        .param("overPrice", "0")
+                        .param("manufacturerId", UUID.randomUUID().toString())
+                        .flashAttr("findProductParam", new FindProductParam()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("products/find"))
+                .andExpect(model().attribute("products", hasSize(2)));
+
     }
 }
