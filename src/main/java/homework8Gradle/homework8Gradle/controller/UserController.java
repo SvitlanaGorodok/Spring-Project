@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/users")
-@RestController
+@Controller
 @Slf4j
 public class UserController {
     private final UserService userService;
@@ -28,7 +29,7 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("")
     public ModelAndView showAll() {
-        ModelAndView model = new ModelAndView("/users/findall");
+        ModelAndView model = new ModelAndView("users/findall");
         model.addObject("users", userService.findAll());
         return model;
     }
@@ -36,7 +37,7 @@ public class UserController {
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/save")
     public ModelAndView saveForm(){
-        ModelAndView model = new ModelAndView("/users/save");
+        ModelAndView model = new ModelAndView("users/save");
         model.addObject("roles", roleService.findAll());
         model.addObject("emails", userService.findAllEmails());
         return model;
@@ -74,7 +75,7 @@ public class UserController {
 
     @GetMapping("/changepassword")
     public ModelAndView changePasswordForm(){
-        ModelAndView model = new ModelAndView("/users/changepassword");
+        ModelAndView model = new ModelAndView("users/changepassword");
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
         UserDto user = userService.findByEmail(userPrincipal.getUsername());
