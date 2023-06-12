@@ -1,8 +1,10 @@
 package homework8Gradle.homework8Gradle.controller;
 
 import homework8Gradle.homework8Gradle.model.dao.Role;
+import homework8Gradle.homework8Gradle.model.dto.FindProductParam;
 import homework8Gradle.homework8Gradle.model.dto.ProductDto;
 import homework8Gradle.homework8Gradle.model.dto.UserDto;
+import homework8Gradle.homework8Gradle.security.UserPrincipal;
 import homework8Gradle.homework8Gradle.service.RoleService;
 import homework8Gradle.homework8Gradle.service.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -20,6 +23,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,6 +36,9 @@ class UserControllerTest {
 
     @Mock
     RoleService roleService;
+
+    @Mock
+    UserPrincipal userPrincipal;
 
     @InjectMocks
     UserController controller;
@@ -138,7 +145,23 @@ class UserControllerTest {
     }
 
     @Test
-    void changePasswordForm() {
+    void changePasswordForm() throws Exception {
+        UserDto user = new UserDto();
+        user.setId(UUID.randomUUID());
+        user.setFirstName("firstName");
+        user.setLastName("lastName");
+        user.setEmail("email@gmail.com");
+        user.setRoleId(UUID.randomUUID());
+        user.setPassword("password");
+        user.setUserDetails("userDetails");
+
+        when(service.findByEmail(any(String.class))).thenReturn(user);
+        when(userPrincipal.getUsername()).thenReturn("email@gmail.com");
+
+        mockMvc.perform(get("/users/changepassword"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/changepassword"))
+                .andExpect(model().attribute("user", user));
     }
 
     @Test
@@ -146,10 +169,49 @@ class UserControllerTest {
     }
 
     @Test
-    void findForm() {
+    void findForm() throws Exception {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role());
+        roles.add(new Role());
+
+        when(roleService.findAll()).thenReturn(roles);
+
+        mockMvc.perform(get("/users/find"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/find"))
+                .andExpect(model().attribute("roles", hasSize(2)));
     }
 
     @Test
-    void find() {
+    void find() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        UserDto user = new UserDto();
+        user.setId(id);
+        user.setFirstName("firstName");
+        user.setLastName("lastName");
+        user.setEmail("email@gmail.com");
+        user.setRoleId(UUID.randomUUID());
+        user.setPassword("password");
+        user.setUserDetails("userDetails");
+
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role());
+        roles.add(new Role());
+
+        when(service.findByParameters(any(UserDto.class))).thenReturn(List.of(user));
+        when(roleService.findAll()).thenReturn(roles);
+
+        mockMvc.perform(post("/users/find")
+                        .param("firstName", "firstName")
+                        .param("lastName", "lastName")
+                        .param("email", "email@gmail.com")
+                        .param("roleId", UUID.randomUUID().toString())
+                        .flashAttr("userDto", new UserDto()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/find"))
+                .andExpect(model().attribute("roles", hasSize(2)))
+                .andExpect(model().attribute("users", hasSize(1)));
+
     }
 }
