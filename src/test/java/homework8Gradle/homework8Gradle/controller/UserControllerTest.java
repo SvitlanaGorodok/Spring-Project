@@ -13,7 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -24,6 +27,7 @@ import java.util.UUID;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -158,6 +162,13 @@ class UserControllerTest {
         when(service.findByEmail(any(String.class))).thenReturn(user);
         when(userPrincipal.getUsername()).thenReturn("email@gmail.com");
 
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).thenReturn(userPrincipal);
+
         mockMvc.perform(get("/users/changepassword"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("users/changepassword"))
@@ -165,7 +176,15 @@ class UserControllerTest {
     }
 
     @Test
-    void changePassword() {
+    void changePassword() throws Exception {
+        mockMvc.perform(post("/users/changepassword")
+                        .param("firstName", "firstName")
+                        .param("lastName", "lastName")
+                        .param("email", "email@gmail.com")
+                        .param("roleId", UUID.randomUUID().toString())
+                        .flashAttr("userDto", new UserDto()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
     }
 
     @Test
