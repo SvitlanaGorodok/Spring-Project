@@ -11,11 +11,15 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class RoleService implements CrudService<Role>{
+public class RoleService implements CrudService<Role> {
     private final RoleRepository repository;
+
     @Override
-    public Role save(Role object) {
-        return null;
+    public Role save(Role role) {
+        if (role.getId() == null){
+            role.setId(UUID.randomUUID());
+        }
+        return repository.save(role);
     }
 
     @Override
@@ -25,15 +29,16 @@ public class RoleService implements CrudService<Role>{
 
     @Override
     public Role findById(UUID id) {
-        return null;
+        return repository.findById(id)
+                .orElseThrow(() -> new NoSuchEntityFoundException("Role with id " + id + "not found!"));
     }
 
     @Override
     public void deleteById(UUID id) {
-
+        repository.deleteById(id);
     }
 
-    public UUID findByName(String name){
+    public UUID findByName(String name) {
         Role role = repository.findByName(name)
                 .orElseThrow(() -> new NoSuchEntityFoundException("Role with name " + name + "not found!"));
         return role.getId();
