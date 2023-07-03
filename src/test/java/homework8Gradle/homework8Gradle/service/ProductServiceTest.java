@@ -107,15 +107,9 @@ class ProductServiceTest {
     @Test
     void findById() {
         UUID productId = UUID.randomUUID();
-        UUID manufacturerId = UUID.randomUUID();
 
         Product product = new Product();
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(manufacturerId);
         product.setId(productId);
-        product.setName("name");
-        product.setPrice(0L);
-        product.setManufacturer(manufacturer);
 
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(product));
 
